@@ -9,45 +9,41 @@ export default function Home() {
 
       {/* Impact Section */}
       {/* Stats Section */}
-      <section className="relative w-full overflow-hidden bg-primary">
-        {/* Subtle pattern overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-
-        {/* Top edge accent */}
-        <div className="absolute top-0 left-0 w-full h-px bg-white/20" />
-
-        <div className="container mx-auto px-4 md:px-6 lg:px-12 py-20">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-white/15">
-            {[
-              { value: "3,000+", label: "People Served" },
-              { value: "19", label: "Projects Completed" },
-              { value: "19", label: "Communities Impacted" },
-              { value: "GH₵ 100K+", label: "Total Donations" },
-            ].map((stat) => (
-              <div key={stat.label} className="flex flex-col items-center justify-center gap-2 px-6 py-8 md:py-4 group">
-                {/* Subtle top accent line per stat */}
-                <div className="w-8 h-0.5 bg-white/30 mb-2 group-hover:w-14 group-hover:bg-white/60 transition-all duration-300" />
-
-                <h3 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-none">
-                  {stat.value}
-                </h3>
-                <p className="text-xs md:text-sm font-medium tracking-[0.15em] uppercase text-white/60 mt-1">
-                  {stat.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Bottom edge accent */}
-        <div className="absolute bottom-0 left-0 w-full h-px bg-white/20" />
-      </section>
+      {/* <section className="relative w-full overflow-hidden bg-primary"> */}
+      {/*   <div */}
+      {/*     className="absolute inset-0 opacity-[0.04] pointer-events-none" */}
+      {/*     style={{ */}
+      {/*       backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", */}
+      {/*       backgroundSize: "28px 28px", */}
+      {/*     }} */}
+      {/*   /> */}
+      {/**/}
+      {/*   <div className="absolute top-0 left-0 w-full h-px bg-white/20" /> */}
+      {/**/}
+      {/*   <div className="container mx-auto px-4 md:px-6 lg:px-12 py-20"> */}
+      {/*     <div className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-white/15"> */}
+      {/*       {[ */}
+      {/*         { value: "3,000+", label: "People Served" }, */}
+      {/*         { value: "19", label: "Projects Completed" }, */}
+      {/*         { value: "19", label: "Communities Impacted" }, */}
+      {/*         { value: "GH₵ 100K+", label: "Total Donations" }, */}
+      {/*       ].map((stat) => ( */}
+      {/*         <div key={stat.label} className="flex flex-col items-center justify-center gap-2 px-6 py-8 md:py-4 group"> */}
+      {/*           <div className="w-8 h-0.5 bg-white/30 mb-2 group-hover:w-14 group-hover:bg-white/60 transition-all duration-300" /> */}
+      {/**/}
+      {/*           <h3 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-none"> */}
+      {/*             {stat.value} */}
+      {/*           </h3> */}
+      {/*           <p className="text-xs md:text-sm font-medium tracking-[0.15em] uppercase text-white/60 mt-1"> */}
+      {/*             {stat.label} */}
+      {/*           </p> */}
+      {/*         </div> */}
+      {/*       ))} */}
+      {/*     </div> */}
+      {/*   </div> */}
+      {/**/}
+      {/*   <div className="absolute bottom-0 left-0 w-full h-px bg-white/20" /> */}
+      {/* </section> */}
 
       {/* About Section */}
       <section className="relative w-full py-24 bg-white overflow-hidden">
