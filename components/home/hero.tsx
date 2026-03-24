@@ -133,7 +133,7 @@ export default function HeroSection() {
               hidden: { scaleX: 0 },
               visible: {
                 scaleX: 1,
-                transitions: { duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.6 },
+                transition: { duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.6 },
               },
             }}
             className="origin-left h-px w-48 mt-8 mb-8"
