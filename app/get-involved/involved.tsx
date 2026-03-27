@@ -1,19 +1,18 @@
 "use client"
 
-import { motion } from "motion/react"
-import Link from "next/link"
-import Image from "next/image"
 import {
-  IconDeviceMobile,
+  IconArrowNarrowRight,
   IconBuildingBank,
+  IconCheck,
+  IconDeviceMobile,
   IconFileText,
   IconGift,
-  IconArrowNarrowRight,
-  IconCheck,
-  IconUsers,
-  IconMicrophone2,
   IconHeart,
+  IconMicrophone2,
+  IconUsers,
 } from "@tabler/icons-react"
+import { motion } from "motion/react"
+import Link from "next/link"
 
 const ways = [
   {
@@ -290,10 +289,11 @@ export default function GetInvolvedPage() {
                   whileInView="visible"
                   viewport={{ once: true, margin: "-60px" }}
                   transition={{ delay: i * 0.08 }}
-                  className={`relative rounded-2xl overflow-hidden border ${way.featured
+                  className={`relative rounded-2xl overflow-hidden border ${
+                    way.featured
                       ? "bg-[#1a0533] border-purple-900/50 md:col-span-2"
                       : "bg-white border-gray-100 shadow-sm hover:shadow-md transition-shadow"
-                    }`}>
+                  }`}>
                   {way.featured ? (
                     <div className="relative p-10 md:flex items-center gap-12 overflow-hidden">
                       <div
@@ -476,7 +476,7 @@ export default function GetInvolvedPage() {
             </motion.div>
 
             <div className="space-y-6">
-              {whySupport.map((item, i) => (
+              {whySupport.map((item, _i) => (
                 <motion.div
                   key={item.title}
                   variants={{

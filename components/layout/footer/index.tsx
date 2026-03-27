@@ -1,14 +1,6 @@
 "use client"
 
-import {
-  IconBrandFacebook,
-  IconBrandInstagram,
-  IconBrandX,
-  IconMail,
-  IconMapPin,
-  IconPhone,
-  IconArrowNarrowRight,
-} from "@tabler/icons-react"
+import { IconBrandFacebook, IconBrandInstagram, IconBrandX, IconMail, IconMapPin, IconPhone } from "@tabler/icons-react"
 import Image from "next/image"
 import Link from "next/link"
 import { dancingScript, platypi } from "@/components/fonts"

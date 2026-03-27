@@ -52,8 +52,9 @@ export function Header() {
             y: isScrolled ? 10 : 0,
           }}
           transition={{ duration: 0.25 }}
-          className={`flex items-center justify-between h-16 max-w-7xl w-full px-6 transition-all duration-300 ${isScrolled ? "bg-white/80 backdrop-blur-xl border border-gray-200 shadow-lg rounded-2xl" : "bg-transparent"
-            }`}>
+          className={`flex items-center justify-between h-16 max-w-7xl w-full px-6 transition-all duration-300 ${
+            isScrolled ? "bg-white/80 backdrop-blur-xl border border-gray-200 shadow-lg rounded-2xl" : "bg-transparent"
+          }`}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <Image src="/logo.png" alt="Vhee World logo" width={52} height={52} priority />

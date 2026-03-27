@@ -1,20 +1,20 @@
 "use client"
 
-import { useState } from "react"
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
-import { motion, AnimatePresence } from "motion/react"
-import Link from "next/link"
 import {
-  IconMapPin,
-  IconPhone,
-  IconMail,
   IconArrowNarrowRight,
   IconChevronDown,
-  IconExternalLink,
   IconCircleCheck,
+  IconExternalLink,
+  IconMail,
+  IconMapPin,
+  IconPhone,
 } from "@tabler/icons-react"
+import { AnimatePresence, motion } from "motion/react"
+import Link from "next/link"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 // ── Schema ──────────────────────────────────────────────
 const contactSchema = z.object({
@@ -80,10 +80,11 @@ function Field({ label, error, children }: { label: string; error?: string; chil
 
 // ── Input class helper ───────────────────────────────────
 function inputClass(hasError: boolean) {
-  return `w-full px-4 py-3 rounded-lg bg-gray-50 border text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:ring-2 transition ${hasError
+  return `w-full px-4 py-3 rounded-lg bg-gray-50 border text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:ring-2 transition ${
+    hasError
       ? "border-red-300 focus:ring-red-200 focus:border-red-400"
       : "border-gray-200 focus:ring-purple-400/40 focus:border-purple-400"
-    }`
+  }`
 }
 
 // ── FAQ accordion item ───────────────────────────────────
