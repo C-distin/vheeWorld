@@ -3,6 +3,7 @@ import { inter } from "@/components/fonts"
 import { Footer } from "@/components/layout/footer"
 import { Header } from "@/components/layout/header"
 import "./globals.css"
+import { Toaster } from "sonner"
 
 const title = "Vhee World"
 const description =
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className} scroll-smooth`}>
       <body className="antialiased">
+        <Toaster richColors position="top-right" />
         <Header />
         {children}
         <Footer />
