@@ -3,9 +3,10 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { IconMail, IconLock, IconEye, IconEyeOff } from "@tabler/icons-react"
+import { IconLock, IconEye, IconEyeOff, IconAt } from "@tabler/icons-react"
 import Link from "next/link"
 import Image from "next/image"
+import { motion } from "motion/react"
 import { signInSchema, type SignInInput } from "@/lib/validation/auth"
 import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group"
 import { Button } from "@/components/ui/button"
@@ -45,18 +46,36 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2">
+    <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 overflow-hidden">
       {/* ── Left panel: branding ── */}
-      <div className="relative hidden lg:flex flex-col justify-between bg-[#1a0533] overflow-hidden p-12">
-        {/* Atmospheric glows */}
-        <div
+      <motion.div
+        initial={{ opacity: 0, x: -32 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="relative hidden lg:flex flex-col justify-center bg-[#1a0533] overflow-hidden p-12">
+        {/* Animated orbs */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 20, 0],
+            y: [0, -15, 0],
+            transition: { duration: 10, repeat: Infinity, ease: "easeInOut" },
+          }}
           className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
-          style={{ background: "radial-gradient(circle, #7c3aed 0%, transparent 70%)" }}
+          style={{ background: "radial-gradient(circle, #3b82f6 0%, transparent 70%)" }}
         />
-        <div
-          className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-15 pointer-events-none"
-          style={{ background: "radial-gradient(circle, #6d28d9 0%, transparent 70%)" }}
+        <motion.div
+          animate={{
+            scale: [1.1, 1, 1.1],
+            x: [0, -15, 0],
+            y: [0, 20, 0],
+            transition: { duration: 13, repeat: Infinity, ease: "easeInOut" },
+          }}
+          className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-20 pointer-events-none"
+          style={{ background: "radial-gradient(circle, #a855f7 0%, transparent 70%)" }}
         />
+
+        {/* Dot pattern */}
         <div
           className="absolute inset-0 opacity-[0.04] pointer-events-none"
           style={{
@@ -65,77 +84,108 @@ export default function LoginPage() {
           }}
         />
 
-        {/* Logo */}
-        <div className="relative z-10 flex items-center gap-3">
-          <Image src="/logo.png" alt="VheeWorld" width={44} height={44} priority />
-          <div className="text-xl font-semibold">
-            <span className={`text-blue-400 tracking-tight ${platypi.className}`}>Vhee</span>
-            <span className={`text-purple-400 tracking-tight ${dancingScript.className}`}>World</span>
-          </div>
-        </div>
-
         {/* Center quote */}
-        <div className="relative z-10 space-y-6">
-          <div className="text-5xl font-serif text-purple-300/30 leading-none select-none">"</div>
-          <p className="text-2xl font-black text-white leading-snug max-w-sm">Streetism should not be an option.</p>
-          <p className="text-sm text-white/40 leading-relaxed max-w-xs">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
+          }}
+          className="relative z-10 space-y-4">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            className="text-5xl font-serif text-purple-300/30 leading-none select-none">
+            "
+          </motion.div>
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            className="text-2xl font-black text-white leading-snug max-w-sm">
+            Streetism should not be an option.
+          </motion.p>
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            className="text-sm text-white/60 leading-relaxed max-w-xs">
             Sign in to manage your contributions, track impact, and stay connected with our mission.
-          </p>
-        </div>
+          </motion.p>
 
-        {/* Bottom tag */}
-        {/* <div className="relative z-10"> */}
-        {/*   <p className="text-xs text-white/20 tracking-widest uppercase"> */}
-        {/*     © {new Date().getFullYear()} VheeWorld Foundation */}
-        {/*   </p> */}
-        {/* </div> */}
-      </div>
+          {/* Animated rule */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="origin-left h-px w-24 mt-4 bg-gradient-to-r from-blue-400 to-transparent"
+          />
+        </motion.div>
+      </motion.div>
 
       {/* ── Right panel: form ── */}
-      <div className="flex items-center justify-center px-6 py-16 bg-[#f7f7fb]">
-        <div className="w-full max-w-md space-y-8">
+      <div className="flex items-center justify-center px-6 py-16 bg-slate-50">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
+          }}
+          className="w-full max-w-md space-y-8">
           {/* Mobile logo */}
-          <div className="flex lg:hidden items-center gap-3 mb-2">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            className="flex lg:hidden items-center gap-3">
             <Image src="/logo.png" alt="VheeWorld" width={36} height={36} priority />
             <div className="text-lg font-semibold">
-              <span className={`text-blue-500 tracking-tight ${platypi.className}`}>Vhee</span>
-              <span className={`text-purple-500 tracking-tight ${dancingScript.className}`}>World</span>
+              <span className={`text-blue-600 tracking-tight ${platypi.className}`}>Vhee</span>
+              <span className={`text-purple-600 tracking-tight ${dancingScript.className}`}>World</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Header */}
-          <div className="space-y-1">
+          <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="space-y-1">
             <h1 className="text-3xl font-black text-gray-900 tracking-tight">Welcome back</h1>
-            <p className="text-sm text-gray-400">Sign in to your account to continue.</p>
-          </div>
+            <p className="text-sm text-gray-500">Sign in to your account to continue.</p>
+          </motion.div>
 
           {/* Form card */}
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-5">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            className="bg-white rounded-2xl border border-gray-100 shadow-xl p-8">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              {/* Email */}
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400">Email Address</label>
+              {/* Username */}
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+                className="space-y-1.5">
+                <label className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400">Username</label>
                 <InputGroup>
                   <InputGroupAddon>
-                    <IconMail size={16} stroke={1.5} className="text-gray-400" />
+                    <IconAt size={16} stroke={1.5} className="text-gray-400" />
                   </InputGroupAddon>
                   <InputGroupInput
-                    type="email"
-                    placeholder="name@example.com"
-                    {...register("email")}
-                    className={errors.email ? "border-red-300 focus-visible:ring-red-200" : ""}
+                    type="text"
+                    placeholder="johndoe99"
+                    {...register("username")}
+                    className={errors.username ? "border-red-300 focus-visible:ring-red-200" : ""}
                   />
                 </InputGroup>
-                {errors.email && <p className="text-[11px] font-medium text-red-500">{errors.email.message}</p>}
-              </div>
+                {errors.username && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-[11px] font-medium text-red-500">
+                    {errors.username.message}
+                  </motion.p>
+                )}
+              </motion.div>
 
               {/* Password */}
-              <div className="space-y-1.5">
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+                className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <label className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400">Password</label>
                   <Link
                     href="/forgot-password"
-                    className="text-[11px] font-semibold text-purple-500 hover:text-purple-700 transition-colors">
+                    className="text-[11px] font-semibold text-blue-600 hover:text-purple-600 transition-colors">
                     Forgot password?
                   </Link>
                 </div>
@@ -158,38 +208,48 @@ export default function LoginPage() {
                     </button>
                   </InputGroupAddon>
                 </InputGroup>
-                {errors.password && <p className="text-[11px] font-medium text-red-500">{errors.password.message}</p>}
-              </div>
+                {errors.password && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-[11px] font-medium text-red-500">
+                    {errors.password.message}
+                  </motion.p>
+                )}
+              </motion.div>
 
               {/* Submit */}
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-3.5 rounded-xl font-bold text-sm tracking-widest uppercase text-white flex items-center justify-center gap-2 hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed transition-all mt-2"
-                style={{ background: "linear-gradient(90deg, #7c3aed, #6d28d9)" }}>
-                {isLoading ? (
-                  <>
-                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                    </svg>
-                    Signing In...
-                  </>
-                ) : (
-                  "Sign In"
-                )}
-              </button>
+              <motion.div variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}>
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-3.5 rounded-xl font-bold text-sm tracking-widest uppercase text-white flex items-center justify-center gap-2 hover:opacity-90 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100 transition-all mt-2 bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg">
+                  {isLoading ? (
+                    <>
+                      <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                      </svg>
+                      Signing In...
+                    </>
+                  ) : (
+                    "Sign In"
+                  )}
+                </Button>
+              </motion.div>
             </form>
-          </div>
+          </motion.div>
 
           {/* Footer */}
-          <p className="text-center text-sm text-gray-400">
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+            className="text-center text-sm text-gray-500">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="font-bold text-purple-600 hover:text-purple-800 transition-colors">
+            <Link href="/sign-up" className="font-bold text-purple-600 hover:text-blue-600 transition-colors">
               Sign up
             </Link>
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </div>
     </div>
   )
