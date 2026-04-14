@@ -1,7 +1,7 @@
 import * as argon2 from "argon2"
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
-import { username } from "better-auth/plugins"
+import { admin, username } from "better-auth/plugins"
 import { db } from "@/lib/db"
 import * as schema from "@/lib/db/schema"
 
@@ -27,11 +27,22 @@ export const auth = betterAuth({
       },
     },
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: ["user", "admin"],
+        required: false,
+        defaultValue: "user",
+        input: false,
+      },
+    },
+  },
   rateLimit: {
     window: 60,
     max: 10,
   },
   session: {
+    strategy: "jwt",
     expiresIn: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,
     cookieCache: {
@@ -39,9 +50,25 @@ export const auth = betterAuth({
     },
   },
   plugins: [
+    admin({
+      defaultRole: "user",
+      adminRoles: ["admin"],
+    }),
     username({
       minUsernameLength: 3,
       maxUsernameLength: 20,
+      // 3. Validate the username before creation
+      usernameValidator: (name) => {
+        const reservedNames = ["admin", "administrator", "root", "system"]
+
+        // Return false if the requested username is in our reserved list (case-insensitive)
+        if (reservedNames.includes(name.toLowerCase())) {
+          return false
+        }
+
+        // Optional: Ensure the username only contains letters, numbers, and underscores
+        return /^[a-zA-Z0-9_]+$/.test(name)
+      },
     }),
   ],
 })

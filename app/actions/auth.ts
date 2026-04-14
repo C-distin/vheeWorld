@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers"
 import { auth } from "@/lib/auth/auth"
-import { type SignUpInput, signUpSchema, type SignInInput, signInSchema } from "@/lib/validation/auth"
+import { type SignInInput, type SignUpInput, signInSchema, signUpSchema } from "@/lib/validation/auth"
 
 export async function signUpAction(data: SignUpInput) {
   const formData = signUpSchema.safeParse(data)
@@ -59,6 +59,24 @@ export async function signInAction(data: SignInInput) {
     return {
       success: true,
       message: "Successfully signed in.",
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Something went wrong.",
+    }
+  }
+}
+
+export async function signOutAction() {
+  try {
+    await auth.api.signOut({
+      headers: await headers(),
+    })
+
+    return {
+      success: true,
+      message: "Successfully signed out.",
     }
   } catch (error) {
     return {

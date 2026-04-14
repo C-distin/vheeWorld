@@ -1,22 +1,24 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { IconAt, IconEye, IconEyeOff, IconLock } from "@tabler/icons-react"
+import { motion } from "motion/react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { IconLock, IconEye, IconEyeOff, IconAt } from "@tabler/icons-react"
-import Link from "next/link"
-import Image from "next/image"
-import { motion } from "motion/react"
-import { signInSchema, type SignInInput } from "@/lib/validation/auth"
-import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group"
-import { Button } from "@/components/ui/button"
-import { signInAction } from "@/app/actions/auth"
 import { toast } from "sonner"
 import { dancingScript, platypi } from "@/components/fonts"
+import { Button } from "@/components/ui/button"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { authClient } from "@/lib/auth/auth-client"
+import { type SignInInput, signInSchema } from "@/lib/validation/auth"
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
 
   const {
     register,
@@ -29,20 +31,21 @@ export default function LoginPage() {
 
   const onSubmit = async (data: SignInInput) => {
     setIsLoading(true)
-    try {
-      const { success, error } = await signInAction(data)
-      if (success) {
-        toast.success("Successfully signed in.")
-        reset()
-      } else {
-        toast.error(error)
-      }
-    } catch (error) {
-      toast.error("Something went wrong.")
-      console.error(error)
-    } finally {
+
+    const { data: session, error } = await authClient.signIn.username({
+      username: data.username,
+      password: data.password,
+    })
+
+    if (error) {
+      toast.error(error.message)
       setIsLoading(false)
+      return
     }
+
+    toast.success("Successfully signed in.")
+    reset()
+    router.push("/dashboard")
   }
 
   return (

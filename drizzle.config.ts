@@ -1,7 +1,8 @@
+import path from "node:path"
 import * as dotenv from "dotenv"
 import { defineConfig } from "drizzle-kit"
 
-dotenv.config()
+dotenv.config({ path: path.resolve(__dirname, ".env.local") })
 
 export default defineConfig({
   out: "./.drizzle",

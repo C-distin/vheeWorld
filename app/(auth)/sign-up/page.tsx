@@ -1,21 +1,23 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { IconAt, IconEye, IconEyeOff, IconLock, IconMail, IconUser } from "@tabler/icons-react"
+import { motion } from "motion/react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { IconUser, IconMail, IconLock, IconEye, IconEyeOff, IconAt } from "@tabler/icons-react"
-import Link from "next/link"
-import Image from "next/image"
-import { motion } from "motion/react"
-import { signUpSchema, type SignUpInput } from "@/lib/validation/auth"
-import { InputGroup, InputGroupInput, InputGroupAddon } from "@/components/ui/input-group"
-import { signUpAction } from "@/app/actions/auth"
 import { toast } from "sonner"
+import { signUpAction } from "@/app/actions/auth"
 import { dancingScript, platypi } from "@/components/fonts"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { type SignUpInput, signUpSchema } from "@/lib/validation/auth"
 
 export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
 
   const {
     register,
@@ -33,6 +35,7 @@ export default function SignUpPage() {
       if (success) {
         toast.success("Account created successfully!")
         reset()
+        router.push("/sign-in")
       } else {
         toast.error(error)
       }
@@ -116,7 +119,7 @@ export default function SignUpPage() {
               { step: "01", label: "Create your account", desc: "Fill in your details to get started." },
               { step: "02", label: "Explore our mission", desc: "Discover how your support creates change." },
               { step: "03", label: "Make an impact", desc: "Donate, volunteer, or spread the word." },
-            ].map((item, i) => (
+            ].map((item, _i) => (
               <motion.div
                 key={item.step}
                 variants={{

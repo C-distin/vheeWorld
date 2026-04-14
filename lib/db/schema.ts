@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core"
+import { boolean, index, integer, jsonb, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -12,6 +12,12 @@ export const user = pgTable("user", {
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
+  role: text("role", { enum: ["user", "admin"] }).default("user"),
+  banned: boolean("banned").default(false),
+  banReason: text("ban_reason"),
+  banExpires: timestamp("ban_expires"),
+  username: text("username").unique(),
+  displayUsername: text("display_username"),
 })
 
 export const session = pgTable(
@@ -29,6 +35,7 @@ export const session = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
+    impersonatedBy: text("impersonated_by"),
   },
   (table) => [index("session_userId_idx").on(table.userId)]
 )
@@ -91,3 +98,69 @@ export const accountRelations = relations(account, ({ one }) => ({
     references: [user.id],
   }),
 }))
+
+// ----------- blog schema ----------------------------
+export const postEnums = pgEnum("post_status", ["draft", "published", "archived"])
+
+export const posts = pgTable("posts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  excerpt: text("excerpt"),
+  content: jsonb("content").$type<Record<string, unknown>>().notNull(),
+  coverImage: text("cover_image"),
+  status: postEnums("status").default("draft"),
+  publishedAt: timestamp("published_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+})
+
+export const tags = pgTable("tags", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull().unique(),
+})
+
+export const postTags = pgTable("post_tags", {
+  postId: uuid("post_id").references(() => posts.id),
+  tagId: uuid("tag_id").references(() => tags.id),
+})
+
+export const postImage = pgTable("post_image", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  url: text("url").notNull(),
+  key: text("key").notNull(),
+  postId: uuid("post_id").references(() => posts.id),
+  createdAt: timestamp("created_at").defaultNow(),
+})
+
+//----------- project schema ----------------------------
+export const projects = pgTable("projects", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  coverImage: text("cover_image").notNull(),
+  videoUrl: text("video_url"),
+  mediaType: text("media_type", { enum: ["gallery", "video"] })
+    .notNull()
+    .default("gallery"),
+  status: text("status", { enum: ["draft", "published"] })
+    .notNull()
+    .default("draft"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+})
+
+export const projectImages = pgTable("project_images", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  projectId: uuid("project_id").references(() => projects.id),
+  url: text("url").notNull(),
+  key: text("key").notNull(),
+  order: integer("order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+})

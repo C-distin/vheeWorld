@@ -1,7 +1,5 @@
 import type { Metadata } from "next"
 import { inter } from "@/components/fonts"
-import { Footer } from "@/components/layout/footer"
-import { Header } from "@/components/layout/header"
 import "./globals.css"
 import { Toaster } from "sonner"
 
@@ -36,9 +34,7 @@ export default function RootLayout({
     <html lang="en" className={`${inter.className} scroll-smooth`}>
       <body className="antialiased">
         <Toaster richColors position="top-right" />
-        <Header />
         {children}
-        <Footer />
       </body>
     </html>
   )
