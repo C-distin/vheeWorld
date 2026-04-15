@@ -306,16 +306,12 @@ export function AdvancedToolbar() {
 
       {/* Block type */}
       <DropdownMenu>
-        <DropdownMenuTrigger aschild>
-          <button
-            type="button"
-            className="flex items-center gap-1.5 h-8 px-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-            <span className="text-xs font-bold text-gray-400 w-5">
-              {blockType === "h1" ? "H1" : blockType === "h2" ? "H2" : blockType === "h3" ? "H3" : "¶"}
-            </span>
-            <span className="min-w-[80px] text-left text-sm">{BLOCK_LABELS[blockType]}</span>
-            <IconChevronDown size={13} className="text-gray-400" />
-          </button>
+        <DropdownMenuTrigger className="flex items-center gap-1.5 h-8 px-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+          <span className="text-xs font-bold text-gray-400 w-5">
+            {blockType === "h1" ? "H1" : blockType === "h2" ? "H2" : blockType === "h3" ? "H3" : "¶"}
+          </span>
+          <span className="min-w-[80px] text-left text-sm">{BLOCK_LABELS[blockType]}</span>
+          <IconChevronDown size={13} className="text-gray-400" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-56">
           {(Object.entries(BLOCK_LABELS) as [BlockType, string][]).map(([type, label]) => (
@@ -337,14 +333,10 @@ export function AdvancedToolbar() {
 
       {/* Font family */}
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            type="button"
-            className="flex items-center gap-1 h-8 px-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-            <span className="text-xs font-bold text-gray-400">T</span>
-            <span className="min-w-[72px] text-left text-sm">{fontFamily}</span>
-            <IconChevronDown size={13} className="text-gray-400" />
-          </button>
+        <DropdownMenuTrigger className="flex items-center gap-1 h-8 px-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+          <span className="text-xs font-bold text-gray-400">T</span>
+          <span className="min-w-[72px] text-left text-sm">{fontFamily}</span>
+          <IconChevronDown size={13} className="text-gray-400" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-48">
           {FONT_FAMILIES.map((font) => (
@@ -426,13 +418,9 @@ export function AdvancedToolbar() {
 
       {/* Aa — extra formats */}
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            type="button"
-            className="flex items-center gap-0.5 h-8 px-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-            <span className="font-semibold text-sm">Aa</span>
-            <IconChevronDown size={13} className="text-gray-400" />
-          </button>
+        <DropdownMenuTrigger className="flex items-center gap-0.5 h-8 px-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+          <span className="font-semibold text-sm">Aa</span>
+          <IconChevronDown size={13} className="text-gray-400" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-52">
           <DropdownMenuItem onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "lowercase" as any)}>
@@ -489,14 +477,10 @@ export function AdvancedToolbar() {
 
       {/* Insert */}
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            type="button"
-            className="flex items-center gap-1 h-8 px-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-            <IconPlus size={14} />
-            <span>Insert</span>
-            <IconChevronDown size={13} className="text-gray-400" />
-          </button>
+        <DropdownMenuTrigger className="flex items-center gap-1 h-8 px-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+          <IconPlus size={14} />
+          <span>Insert</span>
+          <IconChevronDown size={13} className="text-gray-400" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-52">
           {INSERT_ITEMS.map((item) => (
@@ -509,14 +493,10 @@ export function AdvancedToolbar() {
 
       {/* Alignment */}
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            type="button"
-            className="flex items-center gap-1 h-8 px-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-            <AlignIcon size={15} />
-            <span>{currentAlignLabel}</span>
-            <IconChevronDown size={13} className="text-gray-400" />
-          </button>
+        <DropdownMenuTrigger className="flex items-center gap-1 h-8 px-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+          <AlignIcon size={15} />
+          <span>{currentAlignLabel}</span>
+          <IconChevronDown size={13} className="text-gray-400" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-52">
           {ALIGN_OPTIONS.map((opt) => (
