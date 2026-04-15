@@ -9,7 +9,7 @@ export const ourFileRouter = {
     .middleware(async () => {
       const session = await auth.api.getSession({ headers: await headers() })
       if (!session) throw new Error("Unauthorized")
-      if (session.user.role !== "admin") throw new Error("Forbidden")
+      // if (session.user.role !== "admin") throw new Error("Forbidden")
       return { userId: session.user.id }
     })
     .onUploadComplete(async ({ file }) => {
@@ -20,7 +20,7 @@ export const ourFileRouter = {
     .middleware(async () => {
       const session = await auth.api.getSession({ headers: await headers() })
       if (!session) throw new Error("Unauthorized")
-      if (session.user.role !== "admin") throw new Error("Forbidden")
+      // if (session.user.role !== "admin") throw new Error("Forbidden")
       return { userId: session.user.id }
     })
     .onUploadComplete(async ({ file }) => {
@@ -31,7 +31,7 @@ export const ourFileRouter = {
     .middleware(async () => {
       const session = await auth.api.getSession({ headers: await headers() })
       if (!session) throw new Error("Unauthorized")
-      if (session.user.role !== "admin") throw new Error("Forbidden")
+      // if (session.user.role !== "admin") throw new Error("Forbidden")
       return { userId: session.user.id }
     })
     .onUploadComplete(async ({ metadata, file }) => {
@@ -42,7 +42,7 @@ export const ourFileRouter = {
     .middleware(async () => {
       const session = await auth.api.getSession({ headers: await headers() })
       if (!session) throw new Error("Unauthorized")
-      if (session.user.role !== "admin") throw new Error("Forbidden")
+      // if (session.user.role !== "admin") throw new Error("Forbidden")
       return { userId: session.user.id }
     })
     .onUploadComplete(async ({ metadata, file }) => {
