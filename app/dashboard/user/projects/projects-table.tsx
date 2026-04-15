@@ -165,21 +165,23 @@ export function ProjectsTable({
                 {/* Actions */}
                 <TableCell>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        disabled={loadingId === project.id}
-                        className="h-8 w-8 text-gray-400 hover:text-gray-700">
-                        <IconDots size={16} />
-                      </Button>
+                    {/* Replaced asChild with direct styling on Trigger */}
+                    <DropdownMenuTrigger
+                      disabled={loadingId === project.id}
+                      className="h-8 w-8 p-0 text-gray-400 hover:text-gray-700 flex items-center justify-center rounded-md hover:bg-gray-100 focus:outline-none disabled:opacity-50">
+                      <IconDots size={16} />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-44">
                       <DropdownMenuItem onClick={() => onEdit(project)}>
                         <IconEdit size={14} className="mr-2" /> Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <a href={`/projects/${project.slug}`} target="_blank" rel="noreferrer">
+                      {/* Replaced asChild with nested anchor tag and removed default padding */}
+                      <DropdownMenuItem className="p-0">
+                        <a
+                          href={`/projects/${project.slug}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex w-full items-center px-2 py-1.5">
                           <IconExternalLink size={14} className="mr-2" /> View live
                         </a>
                       </DropdownMenuItem>
