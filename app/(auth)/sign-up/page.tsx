@@ -356,7 +356,8 @@ export default function SignUpPage() {
                     {...register("password")}
                     className={errors.password ? "border-red-300 focus-visible:ring-red-200" : ""}
                   />
-                  <InputGroupAddon position="right">
+                  {/* Fix: Removed invalid 'position' prop and added className for styling */}
+                  <InputGroupAddon className="rounded-r-md">
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
