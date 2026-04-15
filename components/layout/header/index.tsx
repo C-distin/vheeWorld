@@ -57,7 +57,13 @@ export function Header() {
           }`}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.png" alt="Vhee World logo" width={52} height={52} priority />
+            <Image
+              src="https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpwvVGtabI0aCoDfLcHhZi8y5Tg1Yues2EO3d7"
+              alt="Vhee World logo"
+              width={52}
+              height={52}
+              priority
+            />
             <div className="text-xl font-semibold">
               <span className={`text-blue-500 tracking-tight ${platypi.className}`}>Vhee</span>
               <span className={`text-purple-500 tracking-tight ${dancingScript.className}`}>World</span>

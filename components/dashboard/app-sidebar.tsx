@@ -41,7 +41,12 @@ export function AppSidebar({ role, user }: AppSidebarProps) {
       {/* ── Header ── */}
       <SidebarHeader className="border-b border-sidebar-border px-4 py-4 space-y-3">
         <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.png" alt="VheeWorld" width={36} height={36} />
+          <Image
+            src="https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpwvVGtabI0aCoDfLcHhZi8y5Tg1Yues2EO3d7"
+            alt="VheeWorld"
+            width={36}
+            height={36}
+          />
           <div className="text-lg font-semibold">
             <span className={`text-blue-500 ${platypi.className}`}>Vhee</span>
             <span className={`text-purple-500 ${dancingScript.className}`}>World</span>
