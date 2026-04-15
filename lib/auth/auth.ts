@@ -10,7 +10,8 @@ export const auth = betterAuth({
     provider: "pg",
     schema,
   }),
-  baseURL: "http://localhost:3000/",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  trustedOrigins: ["http://localhost:3000", "httpps://vhee-world.vercel.app"],
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
