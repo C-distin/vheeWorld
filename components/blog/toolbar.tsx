@@ -439,23 +439,24 @@ export function AdvancedToolbar() {
             <DropdownMenuShortcut>Ctrl+Shift+3</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
+          {/* Fix: Removed 'active' prop and used conditional className */}
           <DropdownMenuItem
-            active={isStrikethrough}
-            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough")}>
+            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "strikethrough")}
+            className={isStrikethrough ? "bg-gray-100" : ""}>
             <IconStrikethrough size={15} className="w-7 text-gray-400" />
             Strikethrough
             <DropdownMenuShortcut>Ctrl+Shift+X</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem
-            active={isSubscript}
-            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "subscript")}>
+            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "subscript")}
+            className={isSubscript ? "bg-gray-100" : ""}>
             <IconSubscript size={15} className="w-7 text-gray-400" />
             Subscript
             <DropdownMenuShortcut>Ctrl+,</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem
-            active={isSuperscript}
-            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "superscript")}>
+            onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "superscript")}
+            className={isSuperscript ? "bg-gray-100" : ""}>
             <IconSuperscript size={15} className="w-7 text-gray-400" />
             Superscript
             <DropdownMenuShortcut>Ctrl+.</DropdownMenuShortcut>
