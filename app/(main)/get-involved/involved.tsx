@@ -13,6 +13,7 @@ import {
 } from "@tabler/icons-react"
 import { motion } from "motion/react"
 import Link from "next/link"
+import Image from "next/image"
 
 const ways = [
   {
@@ -59,6 +60,7 @@ const ways = [
 const involvementCards = [
   {
     icon: IconHeart,
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpQVqXIBh0CBcyrfP91eHV2vpaWzxwnMXSYLNo",
     title: "Invest in Change",
     subtitle: "Financial Contribution",
     desc: "Financial contributions are the lifeblood of our programs. Every cedi is meticulously directed toward human dignity and local sovereignty.",
@@ -66,6 +68,7 @@ const involvementCards = [
   },
   {
     icon: IconUsers,
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpFGYYxSv8GB5dcbomNkOsiZf4PqYArFJ1w3HS",
     title: "Lend Your Voice",
     subtitle: "Join the Network",
     desc: "We are looking for volunteers, storytellers, and technical experts to join our on-ground teams. Share your skills to amplify our mission.",
@@ -73,6 +76,7 @@ const involvementCards = [
   },
   {
     icon: IconMicrophone2,
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpXazlILnHD63vn5zu2V4kBrHyILheMWAZfdEG",
     title: "Spread the Word",
     subtitle: "Advocacy & Awareness",
     desc: "Help us raise awareness about streetism and mental health in your community. Every conversation creates change.",
@@ -204,10 +208,17 @@ export default function GetInvolvedPage() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="group relative rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-                  {/* Image placeholder */}
+                  className="group relative rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition overflow-hidden">
+                  {/* Image */}
                   <div className="w-full h-52 bg-gray-100 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200" />
+                    <Image
+                      src={card.image}
+                      alt={`${card.title} - ${card.subtitle}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      priority={i < 2}
+                      className="object-cover object-center transition duration-300 group-hover:scale-105"
+                    />
                     {/* Icon badge */}
                     <div
                       className="absolute bottom-4 right-4 w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
@@ -221,12 +232,9 @@ export default function GetInvolvedPage() {
                     <p className="text-sm text-gray-500 leading-relaxed">{card.desc}</p>
                     <Link
                       href={card.cta.href}
-                      className="inline-flex items-center gap-1.5 text-sm font-bold text-purple-600 hover:text-purple-800 transition-colors group-hover:gap-2.5">
+                      className="inline-flex items-center gap-1.5 text-sm font-bold text-purple-600 hover:text-purple-800 transition group-hover:gap-2.5">
                       {card.cta.label}
-                      <IconArrowNarrowRight
-                        size={15}
-                        className="transition-transform group-hover:translate-x-1 duration-200"
-                      />
+                      <IconArrowNarrowRight size={15} className="transition group-hover:translate-x-1" />
                     </Link>
                   </div>
                 </motion.div>
@@ -269,7 +277,7 @@ export default function GetInvolvedPage() {
               viewport={{ once: true }}>
               <Link
                 href="mailto:vheeworld@gmail.com"
-                className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-purple-500 hover:text-purple-700 transition-colors whitespace-nowrap">
+                className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-purple-500 hover:text-purple-700 transition whitespace-nowrap">
                 Any questions? Email us <IconArrowNarrowRight size={14} />
               </Link>
             </motion.div>
@@ -292,7 +300,7 @@ export default function GetInvolvedPage() {
                   className={`relative rounded-2xl overflow-hidden border ${
                     way.featured
                       ? "bg-[#1a0533] border-purple-900/50 md:col-span-2"
-                      : "bg-white border-gray-100 shadow-sm hover:shadow-md transition-shadow"
+                      : "bg-white border-gray-100 shadow-sm hover:shadow-md transition"
                   }`}>
                   {way.featured ? (
                     <div className="relative p-10 md:flex items-center gap-12 overflow-hidden">
@@ -337,13 +345,10 @@ export default function GetInvolvedPage() {
                         {way.cta && (
                           <Link
                             href={way.cta.href}
-                            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-gray-900 hover:scale-[1.03] active:scale-[0.98] transition-transform shadow-lg"
+                            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-gray-900 hover:scale-[1.03] active:scale-[0.98] transition shadow-lg"
                             style={{ background: "linear-gradient(90deg, #facc15, #fb923c)" }}>
                             {way.cta.label}
-                            <IconArrowNarrowRight
-                              size={15}
-                              className="group-hover:translate-x-1 transition-transform duration-200"
-                            />
+                            <IconArrowNarrowRight size={15} className="group-hover:translate-x-1 transition" />
                           </Link>
                         )}
                       </div>
@@ -376,12 +381,12 @@ export default function GetInvolvedPage() {
                         <div className="pt-2 flex flex-col gap-1.5">
                           <Link
                             href="mailto:vheeworld@gmail.com"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-500 hover:text-purple-700 transition-colors">
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-500 hover:text-purple-700 transition">
                             <IconArrowNarrowRight size={13} /> vheeworld@gmail.com
                           </Link>
                           <Link
                             href="tel:+233209334967"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-500 hover:text-purple-700 transition-colors">
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-500 hover:text-purple-700 transition">
                             <IconArrowNarrowRight size={13} /> +233 20 933 4967
                           </Link>
                         </div>
@@ -409,13 +414,13 @@ export default function GetInvolvedPage() {
             <div className="flex items-center gap-6 flex-shrink-0">
               <Link
                 href="mailto:vheeworld@gmail.com"
-                className="text-xs font-bold tracking-wide text-purple-600 hover:text-purple-800 transition-colors">
+                className="text-xs font-bold tracking-wide text-purple-600 hover:text-purple-800 transition">
                 vheeworld@gmail.com
               </Link>
               <span className="h-4 w-px bg-gray-200" />
               <Link
                 href="tel:+233209334967"
-                className="text-xs font-bold tracking-wide text-purple-600 hover:text-purple-800 transition-colors">
+                className="text-xs font-bold tracking-wide text-purple-600 hover:text-purple-800 transition">
                 +233 20 933 4967
               </Link>
             </div>
@@ -437,7 +442,14 @@ export default function GetInvolvedPage() {
             viewport={{ once: true }}
             className="relative">
             <div className="w-full aspect-[4/5] rounded-2xl bg-gray-100 overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200" />
+              <Image
+                src="https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpjlP5Dt8Xtq6MH0pPewsGWDbaiZcAzfFEYymx"
+                alt="VheeWorld Foundation community impact"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
+                className="object-cover object-center"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1a0533]/60 via-transparent to-transparent" />
             </div>
 
@@ -476,7 +488,7 @@ export default function GetInvolvedPage() {
             </motion.div>
 
             <div className="space-y-6">
-              {whySupport.map((item, _i) => (
+              {whySupport.map((item) => (
                 <motion.div
                   key={item.title}
                   variants={{
@@ -503,17 +515,13 @@ export default function GetInvolvedPage() {
               className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link
                 href="#ways-to-give"
-                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-white hover:scale-[1.02] transition-transform shadow-lg shadow-purple-100"
-                style={{ background: "linear-gradient(90deg, #7c3aed, #6d28d9)" }}>
+                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-white hover:scale-[1.02] transition shadow-lg shadow-purple-100 bg-linear-to-r from-violet-600 to-violet-700">
                 Support Our Mission
-                <IconArrowNarrowRight
-                  size={15}
-                  className="group-hover:translate-x-1 transition-transform duration-200"
-                />
+                <IconArrowNarrowRight size={15} className="group-hover:translate-x-1 transition" />
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-sm tracking-widest uppercase text-gray-600 border border-gray-200 hover:border-gray-400 transition-colors">
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-sm tracking-widest uppercase text-gray-600 border border-gray-200 hover:border-gray-400 transition">
                 Learn Our Story
               </Link>
             </motion.div>
@@ -568,14 +576,14 @@ export default function GetInvolvedPage() {
             className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="#ways-to-give"
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-gray-900 hover:scale-[1.03] transition-transform shadow-lg"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-gray-900 hover:scale-[1.03] transition shadow-lg"
               style={{ background: "linear-gradient(90deg, #facc15, #fb923c)" }}>
               Donate Now
-              <IconArrowNarrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-200" />
+              <IconArrowNarrowRight size={15} className="group-hover:translate-x-1 transition" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-sm tracking-widest uppercase text-white/70 border border-white/15 hover:border-white/30 hover:text-white transition-all">
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-sm tracking-widest uppercase text-white/70 border border-white/15 hover:border-white/30 hover:text-white transition">
               Contact Us
             </Link>
           </motion.div>
