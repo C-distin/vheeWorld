@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react"
 import Link from "next/link"
+import Image from "next/image"
 
 const timeline = [
   {
@@ -56,46 +57,55 @@ const pillars = [
 const team = [
   {
     name: "Violet Lawson",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpaLYO7wWxWutO8GiCN2wH30PcTQIevo4UknR6",
     role: "Founder & President",
     bio: "Founded VheeWorld at 19 with an unwavering belief that streetism should not be an option. Violet leads the foundation with passion, purpose, and deep community roots.",
   },
   {
     name: "Sarah Hammond",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpsGx0jqb4jtEwy0u8lVLSMahdIAfY5x2eg3BR",
     role: "Secretary",
     bio: "A dedicated team of 10 individuals, each taking up vital roles across programs, outreach, communications, and operations.",
   },
   {
-    name: "Grace Mawuli Agordzzo",
+    name: "Grace Mawusi Agordzzo",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpYhkwRG7Z52iKqafEwtu1dG8zrVgjQSsyMRen",
     role: "Public Relations Officer",
     bio: "The heartbeat of every annual project — volunteers who show up year after year to feed, clothe, educate, and encourage those in need.",
   },
   {
     name: "Emmanuelle Dodoo",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpCFJta9PrVe7QqUD6sP5Xi01axzy9n3OZhWcu",
     role: "Finance Officer",
     bio: "The heartbeat of every annual project — volunteers who show up year after year to feed, clothe, educate, and encourage those in need.",
   },
   {
     name: "Stephan Adjei",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpZnVttZQubIzo7mqgays5XG8tcd3hF4P1QWr0",
     role: "Transport and Logistics Officer",
     bio: "The heartbeat of every annual project — volunteers who show up year after year to feed, clothe, educate, and encourage those in need.",
   },
   {
     name: "Sylvester Adotey",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpK0hgObAp5IijSzfDegHL0UBAGFV4NdqXbhwP",
     role: "Marketing Officer",
     bio: "The heartbeat of every annual project — volunteers who show up year after year to feed, clothe, educate, and encourage those in need.",
   },
   {
     name: "Harriet Awuah",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpqFOPyNrABmQc8RbXhZawICzDkdPueioHjJW4",
     role: "Assistant Marketing Officer",
     bio: "The heartbeat of every annual project — volunteers who show up year after year to feed, clothe, educate, and encourage those in need.",
   },
   {
     name: "Portia Ayikwei",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedp3wuHPneGFylYh9C6sInLmpdiSDE0wb4Kv8kj",
     role: "Research Officer",
     bio: "The heartbeat of every annual project — volunteers who show up year after year to feed, clothe, educate, and encourage those in need.",
   },
   {
     name: "Joseph Darko",
+    image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedp0XTqsMteq1y27ick5dXFIO4S8RJjfugaWNVZ",
     role: "Socail Media Officer",
     bio: "The heartbeat of every annual project — volunteers who show up year after year to feed, clothe, educate, and encourage those in need.",
   },
@@ -325,16 +335,17 @@ export default function About() {
                 transition={{ delay: i * 0.1 }}
                 className="group">
                 <div className="w-full aspect-[3/4] bg-gray-100 rounded-xl mb-5 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-200 to-gray-100" />
+                  <Image
+                    src={member.image}
+                    alt={`Photo of ${member.name}, ${member.role} at VheeWorld Foundation`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    priority={i < 3}
+                    unoptimized
+                    className="object-cover object-center transition duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-200/0 to-gray-100/0" />
                   <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#1a0533]/60 to-transparent" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-black text-gray-300">
-                      {member.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </span>
-                  </div>
                 </div>
                 <h3 className="text-base font-black text-gray-900">{member.name}</h3>
                 <p className="text-xs font-bold tracking-widest uppercase text-purple-500 mt-0.5 mb-3">{member.role}</p>
@@ -399,8 +410,7 @@ export default function About() {
             <Link href="/get-involved/donate">
               <button
                 type="button"
-                className="px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-white shadow-lg hover:scale-[1.03] active:scale-[0.98] transition-transform"
-                style={{ background: "linear-gradient(90deg, #7c3aed, #6d28d9)" }}>
+                className="px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-white shadow-lg hover:scale-[1.03] active:scale-[0.98] transition duration-200 bg-linear-to-r from-violet-600 to-violet-700">
                 Support Our Mission
               </button>
             </Link>
