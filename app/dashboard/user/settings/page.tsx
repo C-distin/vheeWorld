@@ -1,6 +1,6 @@
 import { headers } from "next/headers"
-import { auth } from "@/lib/auth/auth"
 import { redirect } from "next/navigation"
+import { auth } from "@/lib/auth/auth"
 import { SettingsPageClient } from "./settings-page-client"
 
 export default async function SettingsPage() {

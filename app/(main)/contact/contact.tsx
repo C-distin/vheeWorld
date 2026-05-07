@@ -12,21 +12,21 @@ import {
 } from "@tabler/icons-react"
 import { AnimatePresence, motion } from "motion/react"
 import Link from "next/link"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 // ── Schema ──────────────────────────────────────────────
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(80, "Name is too long"),
-  email: z.email("Enter a valid email address"),
+  email: z.string().email("Enter a valid email address"),
   subject: z.string().min(3, "Subject must be at least 3 characters").max(120, "Subject is too long"),
   message: z.string().min(10, "Message must be at least 10 characters").max(2000, "Message is too long"),
 })
 
 type ContactFormData = z.infer<typeof contactSchema>
 
-// ── FAQ data ─────────────────────────────────────────────
+// ── Data ─────────────────────────────────────────────────
 const faqs = [
   {
     question: "How do I verify the impact of my donation?",
@@ -53,13 +53,54 @@ const faqs = [
     answer:
       "Yes. VheeWorld Foundation is a fully registered non-governmental organisation in Ghana, founded in 2015 by Miss Violet Lawson.",
   },
-]
+] as const
+
+const contactInfo = [
+  { icon: IconMapPin, title: "Accra Office", lines: ["Accra, Ghana"] },
+  { icon: IconPhone, title: "Phone Support", lines: ["+233 20 933 4967"] },
+  { icon: IconMail, title: "Email Inquiries", lines: ["vheeworld@gmail.com"] },
+] as const
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+} as const
+
+const fadeUpSmall = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+} as const
+
+// ── Spinner (CSS-driven, zero SVG overhead) ──────────────
+function Spinner({ className }: { className?: string }) {
+  return (
+    <span
+      className={`inline-block w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin ${className}`}
+    />
+  )
+}
 
 // ── Field component ──────────────────────────────────────
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  error,
+  children,
+  id,
+}: {
+  label: string
+  error?: string
+  children: React.ReactNode
+  id: string
+}) {
   return (
     <div className="space-y-1.5">
-      <label className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400">{label}</label>
+      <label htmlFor={id} className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400">
+        {label}
+      </label>
       {children}
       <AnimatePresence mode="wait">
         {error && (
@@ -79,12 +120,13 @@ function Field({ label, error, children }: { label: string; error?: string; chil
 }
 
 // ── Input class helper ───────────────────────────────────
+const inputBase =
+  "w-full px-4 py-3 rounded-lg bg-gray-50 border text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:ring-2 transition"
+
 function inputClass(hasError: boolean) {
-  return `w-full px-4 py-3 rounded-lg bg-gray-50 border text-sm text-gray-900 placeholder:text-gray-300 focus:outline-none focus:ring-2 transition ${
-    hasError
-      ? "border-red-300 focus:ring-red-200 focus:border-red-400"
-      : "border-gray-200 focus:ring-purple-400/40 focus:border-purple-400"
-  }`
+  return hasError
+    ? `${inputBase} border-red-300 focus:ring-red-200 focus:border-red-400`
+    : `${inputBase} border-gray-200 focus:ring-purple-400/40 focus:border-purple-400`
 }
 
 // ── FAQ accordion item ───────────────────────────────────
@@ -92,13 +134,17 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden cursor-pointer" onClick={() => setOpen(!open)}>
-      <div className="flex items-center justify-between px-6 py-5">
+    <div className="border border-gray-200 rounded-xl overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        className="w-full flex items-center justify-between px-6 py-5 text-left cursor-pointer">
         <p className="text-sm font-semibold text-gray-900 pr-4">{question}</p>
         <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.25 }} className="flex-shrink-0">
           <IconChevronDown size={18} className="text-gray-400" />
         </motion.div>
-      </div>
+      </button>
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
@@ -128,31 +174,32 @@ export default function ContactPage() {
     resolver: zodResolver(contactSchema),
   })
 
-  const onSubmit = async (data: ContactFormData) => {
-    setSubmitting(true)
-    // Replace with your actual submission logic (API route, emailjs, etc.)
-    await new Promise((res) => setTimeout(res, 1200))
-    console.log("Form submitted:", data)
-    setSubmitting(false)
-    setSubmitted(true)
-    reset()
-  }
+  const onSubmit = useCallback(
+    async (data: ContactFormData) => {
+      setSubmitting(true)
+      // Replace with your actual submission logic (API route, emailjs, etc.)
+      await new Promise((res) => setTimeout(res, 1200))
+      console.log("Form submitted:", data)
+      setSubmitting(false)
+      setSubmitted(true)
+      reset()
+    },
+    [reset]
+  )
 
   return (
     <main className="min-h-screen w-full bg-[#f7f7fb]">
       {/* ── Hero ── */}
       <section className="relative w-full overflow-hidden bg-[#1a0533]">
-        {/* Atmospheric glow */}
         <div
           className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-25 pointer-events-none"
           style={{ background: "radial-gradient(circle, #7c3aed 0%, transparent 70%)" }}
         />
         <div
-          className="absolute bottom-0 left-0 w-[350px] h-[350px] rounded-full opacity-15 pointer-events-none"
+          className="absolute bottom-0 left-0 w-[350px] h-[350px] rounded-full opacity-[0.15] pointer-events-none"
           style={{ background: "radial-gradient(circle, #6d28d9 0%, transparent 70%)" }}
         />
 
-        {/* Dot grid */}
         <div
           className="absolute inset-0 opacity-[0.05] pointer-events-none"
           style={{
@@ -163,61 +210,40 @@ export default function ContactPage() {
 
         <div className="relative z-10 max-w-6xl mx-auto px-8 md:px-16 pt-40 pb-24">
           <motion.div
+            initial="hidden"
+            animate="visible"
             variants={{
               hidden: { opacity: 0 },
               visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } },
             }}
-            initial="hidden"
-            animate="visible"
             className="space-y-5 max-w-xl">
-            {/* Eyebrow */}
-            <motion.div
-              variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
-              className="flex items-center gap-3">
+            <motion.div variants={fadeUpSmall} className="flex items-center gap-3">
               <span className="flex h-2 w-2 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(234,179,8,0.8)]" />
               <p className="text-xs font-bold tracking-[0.25em] uppercase text-yellow-400/80">Get in Touch</p>
             </motion.div>
 
-            {/* Heading */}
             <motion.h1
-              variants={{
-                hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  filter: "blur(0px)",
-                  transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
-                },
-              }}
+              variants={fadeUp}
               className="text-5xl md:text-6xl font-black text-white tracking-tight leading-none">
               Let&apos;s Work <br />
               <span className="italic text-purple-300">Together</span>
             </motion.h1>
 
-            {/* Subtext */}
-            <motion.p
-              variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-              className="text-base text-white/50 leading-relaxed max-w-md">
+            <motion.p variants={fadeUpSmall} className="text-base text-white/50 leading-relaxed max-w-md">
               Whether you&apos;re interested in volunteering, becoming a donor, or simply sharing a story from the
               communities we serve — our door is always open.
             </motion.p>
 
-            {/* Animated rule */}
             <motion.div
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
               transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.7 }}
-              className="origin-left h-px w-32"
-              style={{ background: "linear-gradient(90deg, #facc15, transparent)" }}
+              className="origin-left h-px w-32 bg-linear-to-r from-yellow-400 to-transparent"
             />
           </motion.div>
         </div>
 
-        {/* Bottom fade into page */}
-        <div
-          className="absolute bottom-0 left-0 w-full h-16 pointer-events-none"
-          style={{ background: "linear-gradient(to bottom, transparent, #f7f7fb)" }}
-        />
+        <div className="absolute bottom-0 left-0 w-full h-16 pointer-events-none bg-linear-to-b from-transparent to-[#f7f7fb]" />
       </section>
 
       {/* ── Form + Info ── */}
@@ -225,21 +251,13 @@ export default function ContactPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Contact Form */}
           <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
             <AnimatePresence mode="wait">
               {submitted ? (
-                /* ── Success state ── */
                 <motion.div
                   key="success"
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -259,49 +277,63 @@ export default function ContactPage() {
                   <button
                     type="button"
                     onClick={() => setSubmitted(false)}
-                    className="mt-2 text-xs font-bold tracking-widest uppercase text-purple-500 hover:text-purple-700 transition-colors">
+                    className="mt-2 text-xs font-bold tracking-widest uppercase text-purple-500 hover:text-purple-700 transition">
                     Send another message
                   </button>
                 </motion.div>
               ) : (
-                /* ── Form state ── */
                 <motion.form
                   key="form"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onSubmit={handleSubmit(onSubmit)}
+                  noValidate
+                  aria-busy={submitting}
                   className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-2 sm:col-span-1">
-                      <Field label="Full Name" error={errors.name?.message}>
-                        <input {...register("name")} placeholder="Ama Mensah" className={inputClass(!!errors.name)} />
+                      <Field id="name" label="Full Name" error={errors.name?.message}>
+                        <input
+                          id="name"
+                          {...register("name")}
+                          placeholder="Ama Mensah"
+                          aria-invalid={!!errors.name}
+                          className={inputClass(!!errors.name)}
+                        />
                       </Field>
                     </div>
                     <div className="col-span-2 sm:col-span-1">
-                      <Field label="Email Address" error={errors.email?.message}>
+                      <Field id="email" label="Email Address" error={errors.email?.message}>
                         <input
+                          id="email"
+                          type="email"
                           {...register("email")}
                           placeholder="ama@example.com"
+                          aria-invalid={!!errors.email}
                           className={inputClass(!!errors.email)}
                         />
                       </Field>
                     </div>
                   </div>
 
-                  <Field label="Subject" error={errors.subject?.message}>
+                  <Field id="subject" label="Subject" error={errors.subject?.message}>
                     <input
+                      id="subject"
                       {...register("subject")}
                       placeholder="How can we help?"
+                      aria-invalid={!!errors.subject}
                       className={inputClass(!!errors.subject)}
                     />
                   </Field>
 
-                  <Field label="Your Message" error={errors.message?.message}>
+                  <Field id="message" label="Your Message" error={errors.message?.message}>
                     <textarea
+                      id="message"
                       {...register("message")}
                       rows={5}
                       placeholder="Tell us more about your inquiry..."
+                      aria-invalid={!!errors.message}
                       className={`${inputClass(!!errors.message)} resize-none`}
                     />
                   </Field>
@@ -309,23 +341,16 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-white hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:scale-100 transition-all shadow-lg shadow-purple-200"
-                    style={{ background: "linear-gradient(90deg, #7c3aed, #6d28d9)" }}>
+                    className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-white hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:scale-100 transition shadow-lg shadow-purple-200 bg-linear-to-r from-violet-600 to-violet-700">
                     {submitting ? (
                       <>
-                        <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                        </svg>
+                        <Spinner />
                         Sending...
                       </>
                     ) : (
                       <>
                         Send Message
-                        <IconArrowNarrowRight
-                          size={16}
-                          className="group-hover:translate-x-1 transition-transform duration-200"
-                        />
+                        <IconArrowNarrowRight size={16} className="group-hover:translate-x-1 transition" />
                       </>
                     )}
                   </button>
@@ -336,14 +361,7 @@ export default function ContactPage() {
 
           {/* Info + Map */}
           <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -351,11 +369,7 @@ export default function ContactPage() {
             <h2 className="text-xl font-black text-gray-900">Our Headquarters</h2>
 
             <div className="space-y-4">
-              {[
-                { icon: IconMapPin, title: "Accra Office", lines: ["Accra, Ghana"] },
-                { icon: IconPhone, title: "Phone Support", lines: ["+233 20 933 4967"] },
-                { icon: IconMail, title: "Email Inquiries", lines: ["vheeworld@gmail.com"] },
-              ].map(({ icon: Icon, title, lines }) => (
+              {contactInfo.map(({ icon: Icon, title, lines }) => (
                 <div key={title} className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
                     <Icon size={16} className="text-purple-600" />
@@ -386,7 +400,8 @@ export default function ContactPage() {
               <Link
                 href="https://maps.google.com/?q=Accra,Ghana"
                 target="_blank"
-                className="flex items-center justify-between px-5 py-3 bg-white hover:bg-gray-50 transition-colors">
+                rel="noopener noreferrer"
+                className="flex items-center justify-between px-5 py-3 bg-white hover:bg-gray-50 transition">
                 <span className="text-xs font-bold tracking-widest uppercase text-gray-500">View on Google Maps</span>
                 <IconExternalLink size={13} className="text-gray-400" />
               </Link>
@@ -399,14 +414,7 @@ export default function ContactPage() {
       <section className="w-full py-24 px-8 md:px-16 bg-white">
         <div className="max-w-3xl mx-auto">
           <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -421,14 +429,7 @@ export default function ContactPage() {
             {faqs.map((faq, i) => (
               <motion.div
                 key={i}
-                variants={{
-                  hidden: { opacity: 0, y: 24 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-                  },
-                }}
+                variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-40px" }}

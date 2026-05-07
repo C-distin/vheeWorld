@@ -1,8 +1,8 @@
-import { getPublishedPosts } from "@/app/actions/posts"
-import { notFound } from "next/navigation"
+import { IconArrowNarrowLeft, IconArrowNarrowRight, IconCalendar } from "@tabler/icons-react"
 import Image from "next/image"
 import Link from "next/link"
-import { IconCalendar, IconArrowNarrowLeft, IconArrowNarrowRight } from "@tabler/icons-react"
+import { notFound } from "next/navigation"
+import { getPublishedPosts } from "@/app/actions/posts"
 import { BlogContent } from "@/components/blog/blog-content"
 
 export async function generateStaticParams() {

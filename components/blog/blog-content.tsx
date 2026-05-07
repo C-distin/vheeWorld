@@ -1,15 +1,15 @@
 "use client"
 
+import { CodeHighlightNode, CodeNode } from "@lexical/code"
+import { AutoLinkNode, LinkNode } from "@lexical/link"
+import { ListItemNode, ListNode } from "@lexical/list"
 import { LexicalComposer } from "@lexical/react/LexicalComposer"
-import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin"
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 import { ContentEditable } from "@lexical/react/LexicalContentEditable"
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary"
+import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin"
 import { HeadingNode, QuoteNode } from "@lexical/rich-text"
-import { ListNode, ListItemNode } from "@lexical/list"
-import { LinkNode, AutoLinkNode } from "@lexical/link"
-import { CodeNode, CodeHighlightNode } from "@lexical/code"
 import { useEffect } from "react"
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext"
 
 const theme = {
   heading: {

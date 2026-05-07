@@ -1,7 +1,7 @@
-import { getPublishedPosts } from "@/app/actions/posts"
-import Link from "next/link"
+import { IconArrowNarrowRight, IconCalendar, IconMoodEmpty } from "@tabler/icons-react"
 import Image from "next/image"
-import { IconCalendar, IconArrowNarrowRight, IconMoodEmpty } from "@tabler/icons-react"
+import Link from "next/link"
+import { getPublishedPosts } from "@/app/actions/posts"
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts()
@@ -51,7 +51,7 @@ export default async function BlogPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post, i) => (
+              {posts.map((post, _i) => (
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}

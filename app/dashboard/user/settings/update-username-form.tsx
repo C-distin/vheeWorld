@@ -1,15 +1,15 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { IconLoader2, IconUser } from "@tabler/icons-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import { toast } from "sonner"
-import { authClient } from "@/lib/auth/auth-client"
-import { Input } from "@/components/ui/input"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { IconLoader2, IconUser } from "@tabler/icons-react"
+import { authClient } from "@/lib/auth/auth-client"
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(80),
@@ -84,11 +84,7 @@ export function UpdateUsernameForm({ user }: { user: User }) {
         {/* Name */}
         <div className="space-y-1.5">
           <Label className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-400">Display Name</Label>
-          <Input
-            {...register("name")}
-            placeholder="Your full name"
-            className={errors.name ? "border-red-300" : ""}
-          />
+          <Input {...register("name")} placeholder="Your full name" className={errors.name ? "border-red-300" : ""} />
           {errors.name && <p className="text-[11px] text-red-500">{errors.name.message}</p>}
         </div>
 

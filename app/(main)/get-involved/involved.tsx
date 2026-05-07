@@ -1,5 +1,6 @@
 "use client"
 
+import type { IconProps } from "@tabler/icons-react"
 import {
   IconArrowNarrowRight,
   IconBuildingBank,
@@ -11,11 +12,72 @@ import {
   IconMicrophone2,
   IconUsers,
 } from "@tabler/icons-react"
-import { motion } from "motion/react"
-import Link from "next/link"
+import { motion, type Variants } from "motion/react"
 import Image from "next/image"
+import Link from "next/link"
+import type { ForwardRefExoticComponent, RefAttributes } from "react"
 
-const ways = [
+// ── Types ────────────────────────────────────────────────────────────────────
+
+type TablerIcon = ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
+
+interface WayDetail {
+  label: string
+  value: string
+}
+
+interface Way {
+  icon: TablerIcon
+  title: string
+  subtitle: string
+  desc: string
+  featured?: boolean
+  highlights?: readonly string[]
+  cta?: { label: string; href: string }
+  details?: readonly WayDetail[]
+  contact?: boolean
+}
+
+interface InvolvementCard {
+  icon: TablerIcon
+  image: string
+  title: string
+  subtitle: string
+  desc: string
+  cta: { label: string; href: string }
+}
+
+interface WhySupportItem {
+  icon: string
+  title: string
+  desc: string
+}
+
+// ── Shared motion variants ──────────────────────────────────────────────────
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+}
+
+const stagger: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.12, delayChildren: 0.2 },
+  },
+}
+
+const inView = { once: true } as const
+const inViewOffset = { once: true, margin: "-60px" } as const
+
+// ── Static data ─────────────────────────────────────────────────────────────
+
+const ways: Way[] = [
   {
     icon: IconDeviceMobile,
     title: "Donate Securely Online",
@@ -55,16 +117,16 @@ const ways = [
     desc: "Have goods, materials, or resources to contribute? Get in touch and we'll guide you through the process.",
     contact: true,
   },
-]
+] satisfies Way[]
 
-const involvementCards = [
+const involvementCards: InvolvementCard[] = [
   {
     icon: IconHeart,
     image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpQVqXIBh0CBcyrfP91eHV2vpaWzxwnMXSYLNo",
     title: "Invest in Change",
     subtitle: "Financial Contribution",
     desc: "Financial contributions are the lifeblood of our programs. Every cedi is meticulously directed toward human dignity and local sovereignty.",
-    cta: { label: "Donate Today", href: "#ways-to-give" },
+    cta: { label: "Donate Today", href: "/get-involved/donate" },
   },
   {
     icon: IconUsers,
@@ -72,7 +134,7 @@ const involvementCards = [
     title: "Lend Your Voice",
     subtitle: "Join the Network",
     desc: "We are looking for volunteers, storytellers, and technical experts to join our on-ground teams. Share your skills to amplify our mission.",
-    cta: { label: "Join the Network", href: "#volunteer" },
+    cta: { label: "Join the Network", href: "/get-involved/volunteer" },
   },
   {
     icon: IconMicrophone2,
@@ -80,11 +142,11 @@ const involvementCards = [
     title: "Spread the Word",
     subtitle: "Advocacy & Awareness",
     desc: "Help us raise awareness about streetism and mental health in your community. Every conversation creates change.",
-    cta: { label: "Learn How", href: "#advocate" },
+    cta: { label: "Learn How", href: "get-involved/volunteer" },
   },
-]
+] satisfies InvolvementCard[]
 
-const whySupport = [
+const whySupport: WhySupportItem[] = [
   {
     icon: "📚",
     title: "Education & Mentorship",
@@ -100,62 +162,65 @@ const whySupport = [
     title: "Community Engagement",
     desc: "Your contributions enable us to show up — year after year — to feed, clothe, and walk alongside those who have no one to turn to.",
   },
-]
+] satisfies WhySupportItem[]
+
+// ── Subcomponents ────────────────────────────────────────────────────────────
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-3">
+      <span className="h-px w-8 bg-purple-400" />
+      <span className="text-xs font-bold tracking-[0.2em] uppercase text-purple-500">{children}</span>
+    </div>
+  )
+}
+
+function ContactLinks() {
+  return (
+    <div className="pt-2 flex flex-col gap-1.5">
+      <Link
+        href="mailto:vheeworld@gmail.com"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-500 hover:text-purple-700 transition-colors">
+        <IconArrowNarrowRight size={13} /> vheeworld@gmail.com
+      </Link>
+      <Link
+        href="tel:+233209334967"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-500 hover:text-purple-700 transition-colors">
+        <IconArrowNarrowRight size={13} /> +233 20 933 4967
+      </Link>
+    </div>
+  )
+}
+
+// ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function GetInvolvedPage() {
   return (
     <main className="min-h-screen w-full bg-white">
       {/* ── Hero ── */}
-      <section className="relative w-full overflow-hidden bg-[#1a0533] min-h-[520px] flex flex-col justify-end">
-        <div
-          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none"
-          style={{ background: "radial-gradient(circle, #7c3aed 0%, transparent 70%)" }}
-        />
-        <div
-          className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full opacity-10 pointer-events-none"
-          style={{ background: "radial-gradient(circle, #6d28d9 0%, transparent 70%)" }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.05] pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
+      <section className="relative w-full min-h-[520px] flex flex-col justify-end overflow-hidden bg-[#1a0533]">
+        {/* Background effects — pure CSS, no inline style */}
+        <div className="absolute inset-0 bg-[image:radial-gradient(circle_at_top_right,#7c3aed_0%,transparent_60%)] opacity-20 pointer-events-none" />
+        <div className="absolute inset-0 bg-[image:radial-gradient(circle_at_bottom_left,#6d28d9_0%,transparent_60%)] opacity-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-[image:radial-gradient(circle,white_1px,transparent_1px)] bg-[size:28px_28px] opacity-[0.05] pointer-events-none" />
 
         <motion.div
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-          }}
+          variants={stagger}
           initial="hidden"
           animate="visible"
           className="relative z-10 max-w-6xl mx-auto px-8 md:px-16 pt-40 pb-20 space-y-5">
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
-            className="flex items-center gap-3">
+          <motion.div variants={fadeUp} className="flex items-center gap-3">
             <span className="flex h-2 w-2 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(234,179,8,0.8)]" />
             <span className="text-xs font-bold tracking-[0.25em] uppercase text-yellow-400/80">Get Involved</span>
           </motion.div>
 
           <motion.h1
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
+            variants={fadeUp}
             className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.05] max-w-2xl">
             Help Us <span className="italic text-purple-300">Rewrite</span> the Narrative.
           </motion.h1>
 
-          <motion.p
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
-            className="text-base text-white/50 leading-relaxed max-w-md">
+          <motion.p variants={fadeUp} className="text-base text-white/50 leading-relaxed max-w-md">
             Join our mission to empower vulnerable children and communities through education, mentorship, and mental
             health support. Your agency fuels our shared momentum.
           </motion.p>
@@ -164,33 +229,23 @@ export default function GetInvolvedPage() {
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}
             transition={{ duration: 0.9, delay: 0.8 }}
-            className="origin-left h-px w-32"
-            style={{ background: "linear-gradient(90deg, #facc15, transparent)" }}
+            className="origin-left h-px w-32 bg-linear-to-r from-yellow-400 to-transparent"
           />
         </motion.div>
 
-        <div
-          className="absolute bottom-0 left-0 w-full h-16 pointer-events-none"
-          style={{ background: "linear-gradient(to bottom, transparent, #ffffff)" }}
-        />
+        <div className="absolute bottom-0 left-0 w-full h-16 bg-linear-to-b from-transparent to-white pointer-events-none" />
       </section>
 
       {/* ── How to Get Involved Cards ── */}
       <section className="w-full py-24 px-8 md:px-16 bg-white">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={inView}
             className="mb-12 space-y-2">
-            <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-purple-400" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-purple-500">How You Can Help</span>
-            </div>
+            <SectionLabel>How You Can Help</SectionLabel>
             <h2 className="text-3xl md:text-4xl font-black text-gray-900">Three Ways to Make an Impact</h2>
           </motion.div>
 
@@ -200,29 +255,22 @@ export default function GetInvolvedPage() {
               return (
                 <motion.div
                   key={card.title}
-                  variants={{
-                    hidden: { opacity: 0, y: 24 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-                  }}
+                  variants={fadeUp}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true }}
+                  viewport={inView}
                   transition={{ delay: i * 0.1 }}
-                  className="group relative rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition overflow-hidden">
-                  {/* Image */}
-                  <div className="w-full h-52 bg-gray-100 relative overflow-hidden">
+                  className="group relative rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                  <div className="relative w-full h-52 bg-gray-100 overflow-hidden">
                     <Image
                       src={card.image}
-                      alt={`${card.title} - ${card.subtitle}`}
+                      alt={`${card.title} — ${card.subtitle}`}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
                       priority={i < 2}
-                      className="object-cover object-center transition duration-300 group-hover:scale-105"
+                      className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
                     />
-                    {/* Icon badge */}
-                    <div
-                      className="absolute bottom-4 right-4 w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
-                      style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)" }}>
+                    <div className="absolute bottom-4 right-4 w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-linear-to-br from-violet-600 to-violet-700">
                       <Icon size={22} className="text-white" />
                     </div>
                   </div>
@@ -232,9 +280,9 @@ export default function GetInvolvedPage() {
                     <p className="text-sm text-gray-500 leading-relaxed">{card.desc}</p>
                     <Link
                       href={card.cta.href}
-                      className="inline-flex items-center gap-1.5 text-sm font-bold text-purple-600 hover:text-purple-800 transition group-hover:gap-2.5">
+                      className="inline-flex items-center gap-1.5 text-sm font-bold text-purple-600 hover:text-purple-800 transition-colors group-hover:gap-2.5">
                       {card.cta.label}
-                      <IconArrowNarrowRight size={15} className="transition group-hover:translate-x-1" />
+                      <IconArrowNarrowRight size={15} className="transition-transform group-hover:translate-x-1" />
                     </Link>
                   </div>
                 </motion.div>
@@ -245,39 +293,27 @@ export default function GetInvolvedPage() {
       </section>
 
       {/* ── Ways to Give ── */}
-      <section id="ways-to-give" className="w-full py-24 px-8 md:px-16 bg-[#f7f7fb]">
+      <section id="ways-to-give" className="w-full py-24 px-8 md:px-16 bg-zinc-50">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
             <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 24 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-              }}
+              variants={fadeUp}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true }}
+              viewport={inView}
               className="space-y-3">
-              <div className="flex items-center gap-3">
-                <span className="h-px w-8 bg-purple-400" />
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-purple-500">Donate</span>
-              </div>
+              <SectionLabel>Donate</SectionLabel>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900">Ways to Give</h2>
               <p className="text-sm text-gray-400 max-w-md leading-relaxed">
                 We offer multiple channels for contribution, ensuring every partner can support in a way that aligns
                 with their capacity.
               </p>
             </motion.div>
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 24 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-              }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}>
+
+            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={inView}>
               <Link
                 href="mailto:vheeworld@gmail.com"
-                className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-purple-500 hover:text-purple-700 transition whitespace-nowrap">
+                className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-purple-500 hover:text-purple-700 transition-colors whitespace-nowrap">
                 Any questions? Email us <IconArrowNarrowRight size={14} />
               </Link>
             </motion.div>
@@ -289,32 +325,20 @@ export default function GetInvolvedPage() {
               return (
                 <motion.div
                   key={way.title}
-                  variants={{
-                    hidden: { opacity: 0, y: 24 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-                  }}
+                  variants={fadeUp}
                   initial="hidden"
                   whileInView="visible"
-                  viewport={{ once: true, margin: "-60px" }}
+                  viewport={inViewOffset}
                   transition={{ delay: i * 0.08 }}
                   className={`relative rounded-2xl overflow-hidden border ${
                     way.featured
                       ? "bg-[#1a0533] border-purple-900/50 md:col-span-2"
-                      : "bg-white border-gray-100 shadow-sm hover:shadow-md transition"
+                      : "bg-white border-gray-100 shadow-sm hover:shadow-md transition-shadow"
                   }`}>
                   {way.featured ? (
                     <div className="relative p-10 md:flex items-center gap-12 overflow-hidden">
-                      <div
-                        className="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none opacity-20"
-                        style={{ background: "radial-gradient(circle, #7c3aed 0%, transparent 70%)" }}
-                      />
-                      <div
-                        className="absolute inset-0 opacity-[0.04] pointer-events-none"
-                        style={{
-                          backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
-                          backgroundSize: "24px 24px",
-                        }}
-                      />
+                      <div className="absolute inset-0 bg-[image:radial-gradient(circle_at_top_right,#7c3aed_0%,transparent_70%)] opacity-20 pointer-events-none" />
+                      <div className="absolute inset-0 bg-[image:radial-gradient(circle,white_1px,transparent_1px)] bg-[size:24px_24px] opacity-[0.04] pointer-events-none" />
 
                       <div className="relative flex-1 space-y-5 mb-8 md:mb-0">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-400/10 border border-yellow-400/20">
@@ -329,26 +353,28 @@ export default function GetInvolvedPage() {
                         </div>
                         <p className="text-sm text-white/50 leading-relaxed max-w-sm">{way.desc}</p>
                         <ul className="space-y-2">
-                          {way.highlights?.map((h) => (
+                          {way.highlights?.map((h: string) => (
                             <li key={h} className="flex items-center gap-2 text-xs text-white/60">
-                              <IconCheck size={13} className="text-yellow-400 flex-shrink-0" />
+                              <IconCheck size={13} className="text-yellow-400 shrink-0" />
                               {h}
                             </li>
                           ))}
                         </ul>
                       </div>
 
-                      <div className="relative flex-shrink-0">
+                      <div className="relative shrink-0">
                         <div className="w-24 h-24 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 mx-auto md:mx-0">
                           <Icon size={40} className="text-purple-300" />
                         </div>
                         {way.cta && (
                           <Link
                             href={way.cta.href}
-                            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-gray-900 hover:scale-[1.03] active:scale-[0.98] transition shadow-lg"
-                            style={{ background: "linear-gradient(90deg, #facc15, #fb923c)" }}>
+                            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-gray-900 bg-linear-to-r from-yellow-400 to-orange-400 hover:scale-[1.03] active:scale-[0.98] transition-transform shadow-lg">
                             {way.cta.label}
-                            <IconArrowNarrowRight size={15} className="group-hover:translate-x-1 transition" />
+                            <IconArrowNarrowRight
+                              size={15}
+                              className="transition-transform group-hover:translate-x-1"
+                            />
                           </Link>
                         )}
                       </div>
@@ -377,20 +403,7 @@ export default function GetInvolvedPage() {
                         </div>
                       )}
 
-                      {way.contact && (
-                        <div className="pt-2 flex flex-col gap-1.5">
-                          <Link
-                            href="mailto:vheeworld@gmail.com"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-500 hover:text-purple-700 transition">
-                            <IconArrowNarrowRight size={13} /> vheeworld@gmail.com
-                          </Link>
-                          <Link
-                            href="tel:+233209334967"
-                            className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-500 hover:text-purple-700 transition">
-                            <IconArrowNarrowRight size={13} /> +233 20 933 4967
-                          </Link>
-                        </div>
-                      )}
+                      {way.contact && <ContactLinks />}
                     </div>
                   )}
                 </motion.div>
@@ -400,27 +413,24 @@ export default function GetInvolvedPage() {
 
           {/* Reassurance strip */}
           <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={inView}
             className="mt-8 rounded-2xl bg-white border border-gray-100 px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-gray-500 text-center sm:text-left">
               Have questions about donating? We&apos;re happy to help.
             </p>
-            <div className="flex items-center gap-6 flex-shrink-0">
+            <div className="flex items-center gap-6 shrink-0">
               <Link
                 href="mailto:vheeworld@gmail.com"
-                className="text-xs font-bold tracking-wide text-purple-600 hover:text-purple-800 transition">
+                className="text-xs font-bold tracking-wide text-purple-600 hover:text-purple-800 transition-colors">
                 vheeworld@gmail.com
               </Link>
               <span className="h-4 w-px bg-gray-200" />
               <Link
                 href="tel:+233209334967"
-                className="text-xs font-bold tracking-wide text-purple-600 hover:text-purple-800 transition">
+                className="text-xs font-bold tracking-wide text-purple-600 hover:text-purple-800 transition-colors">
                 +233 20 933 4967
               </Link>
             </div>
@@ -432,16 +442,8 @@ export default function GetInvolvedPage() {
       <section className="w-full py-24 px-8 md:px-16 bg-white">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left: image + stat */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="relative">
-            <div className="w-full aspect-[4/5] rounded-2xl bg-gray-100 overflow-hidden relative">
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={inView} className="relative">
+            <div className="relative w-full aspect-[4/5] rounded-2xl bg-gray-100 overflow-hidden">
               <Image
                 src="https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedpjlP5Dt8Xtq6MH0pPewsGWDbaiZcAzfFEYymx"
                 alt="VheeWorld Foundation community impact"
@@ -450,10 +452,9 @@ export default function GetInvolvedPage() {
                 priority
                 className="object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1a0533]/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-[#1a0533]/60 via-transparent to-transparent" />
             </div>
 
-            {/* Floating stat */}
             <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl px-6 py-4 shadow-xl">
               <p className="text-3xl font-black text-gray-900">11 Years</p>
               <p className="text-[10px] font-bold tracking-widest uppercase text-purple-500 mt-0.5">
@@ -463,25 +464,9 @@ export default function GetInvolvedPage() {
           </motion.div>
 
           {/* Right: content */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-            }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="space-y-8">
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 24 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-              }}
-              className="space-y-3">
-              <div className="flex items-center gap-3">
-                <span className="h-px w-8 bg-purple-400" />
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-purple-500">Why It Matters</span>
-              </div>
+          <motion.div variants={stagger} initial="hidden" whileInView="visible" viewport={inView} className="space-y-8">
+            <motion.div variants={fadeUp} className="space-y-3">
+              <SectionLabel>Why It Matters</SectionLabel>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight">
                 Your Support Matters Because <span className="italic text-purple-600">Narrative is Power.</span>
               </h2>
@@ -489,14 +474,8 @@ export default function GetInvolvedPage() {
 
             <div className="space-y-6">
               {whySupport.map((item) => (
-                <motion.div
-                  key={item.title}
-                  variants={{
-                    hidden: { opacity: 0, y: 24 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-                  }}
-                  className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center text-xl flex-shrink-0">
+                <motion.div key={item.title} variants={fadeUp} className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-purple-50 flex items-center justify-center text-xl shrink-0">
                     {item.icon}
                   </div>
                   <div>
@@ -507,21 +486,16 @@ export default function GetInvolvedPage() {
               ))}
             </div>
 
-            <motion.div
-              variants={{
-                hidden: { opacity: 0, y: 24 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-              }}
-              className="flex flex-col sm:flex-row gap-4 pt-2">
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link
                 href="#ways-to-give"
-                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-white hover:scale-[1.02] transition shadow-lg shadow-purple-100 bg-linear-to-r from-violet-600 to-violet-700">
+                className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-bold text-sm tracking-widest uppercase text-white bg-linear-to-r from-violet-600 to-violet-700 hover:scale-[1.02] transition-transform shadow-lg shadow-purple-100">
                 Support Our Mission
-                <IconArrowNarrowRight size={15} className="group-hover:translate-x-1 transition" />
+                <IconArrowNarrowRight size={15} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-sm tracking-widest uppercase text-gray-600 border border-gray-200 hover:border-gray-400 transition">
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold text-sm tracking-widest uppercase text-gray-600 border border-gray-200 hover:border-gray-400 transition-colors">
                 Learn Our Story
               </Link>
             </motion.div>
@@ -531,59 +505,33 @@ export default function GetInvolvedPage() {
 
       {/* ── Closing CTA ── */}
       <section className="relative w-full py-24 px-8 md:px-16 overflow-hidden bg-[#1a0533]">
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] pointer-events-none"
-          style={{ background: "radial-gradient(ellipse, rgba(124,58,237,0.3) 0%, transparent 70%)" }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
+        <div className="absolute inset-0 bg-[image:radial-gradient(ellipse_at_top_center,rgba(124,58,237,0.3)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[image:radial-gradient(circle,white_1px,transparent_1px)] bg-[size:28px_28px] opacity-[0.04] pointer-events-none" />
 
         <motion.div
-          variants={{
-            hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-          }}
+          variants={stagger}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={inView}
           className="relative z-10 max-w-3xl mx-auto text-center space-y-8">
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
-            className="text-6xl font-serif text-purple-300/40 leading-none select-none">
+          <motion.div variants={fadeUp} className="text-6xl font-serif text-purple-300/40 leading-none select-none">
             "
           </motion.div>
-          <motion.p
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
-            className="text-2xl md:text-3xl font-black text-white leading-snug">
+
+          <motion.p variants={fadeUp} className="text-2xl md:text-3xl font-black text-white leading-snug">
             Streetism should not be an option — and with your help, it won&apos;t be.
           </motion.p>
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-            }}
-            className="flex flex-col sm:flex-row gap-4 justify-center">
+
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="#ways-to-give"
-              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-gray-900 hover:scale-[1.03] transition shadow-lg"
-              style={{ background: "linear-gradient(90deg, #facc15, #fb923c)" }}>
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-gray-900 bg-linear-to-r from-yellow-400 to-orange-400 hover:scale-[1.03] transition-transform shadow-lg">
               Donate Now
-              <IconArrowNarrowRight size={15} className="group-hover:translate-x-1 transition" />
+              <IconArrowNarrowRight size={15} className="transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-sm tracking-widest uppercase text-white/70 border border-white/15 hover:border-white/30 hover:text-white transition">
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-sm tracking-widest uppercase text-white/70 border border-white/15 hover:border-white/30 hover:text-white transition-colors">
               Contact Us
             </Link>
           </motion.div>

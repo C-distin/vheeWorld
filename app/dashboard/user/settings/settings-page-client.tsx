@@ -1,11 +1,11 @@
 "use client"
 
+import { IconLock, IconTrash, IconUser } from "@tabler/icons-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { IconUser, IconLock, IconTrash } from "@tabler/icons-react"
-import { UpdateUsernameForm } from "./update-username-form"
 import { ChangePasswordForm } from "./change-password-form"
 import { DeleteAccountSection } from "./delete-account-section"
+import { UpdateUsernameForm } from "./update-username-form"
 
 interface User {
   id: string
@@ -31,7 +31,6 @@ export function SettingsPageClient({ user }: { user: User }) {
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
-
         {/* ── Vertical tabs ── */}
         <aside className="w-full md:w-56 flex-shrink-0">
           <nav className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
@@ -51,22 +50,21 @@ export function SettingsPageClient({ user }: { user: User }) {
                         ? "bg-red-50 text-red-600"
                         : "bg-purple-50 text-purple-700"
                       : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                  )}
-                >
+                  )}>
                   <Icon
                     size={16}
                     className={cn(
-                      active
-                        ? tab.id === "danger" ? "text-red-500" : "text-purple-600"
-                        : "text-gray-400"
+                      active ? (tab.id === "danger" ? "text-red-500" : "text-purple-600") : "text-gray-400"
                     )}
                   />
                   {tab.label}
                   {active && (
-                    <div className={cn(
-                      "ml-auto w-1 h-5 rounded-full",
-                      tab.id === "danger" ? "bg-red-400" : "bg-purple-500"
-                    )} />
+                    <div
+                      className={cn(
+                        "ml-auto w-1 h-5 rounded-full",
+                        tab.id === "danger" ? "bg-red-400" : "bg-purple-500"
+                      )}
+                    />
                   )}
                 </button>
               )

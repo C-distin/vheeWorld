@@ -1,8 +1,8 @@
-import { getAllProjects, getProjectImages } from "@/app/actions/projects"
-import { notFound } from "next/navigation"
+import { IconArrowNarrowLeft, IconArrowNarrowRight } from "@tabler/icons-react"
 import Image from "next/image"
 import Link from "next/link"
-import { IconArrowNarrowLeft, IconArrowNarrowRight } from "@tabler/icons-react"
+import { notFound } from "next/navigation"
+import { getAllProjects, getProjectImages } from "@/app/actions/projects"
 
 export async function generateStaticParams() {
   const projects = await getAllProjects()

@@ -1,7 +1,7 @@
-import { getAllProjects } from "@/app/actions/projects"
-import Link from "next/link"
-import Image from "next/image"
 import { IconArrowNarrowRight, IconMoodEmpty, IconPhoto, IconVideo } from "@tabler/icons-react"
+import Image from "next/image"
+import Link from "next/link"
+import { getAllProjects } from "@/app/actions/projects"
 
 export default async function ProjectsPage() {
   const allProjects = await getAllProjects()

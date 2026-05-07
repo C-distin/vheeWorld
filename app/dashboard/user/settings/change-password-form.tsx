@@ -1,15 +1,16 @@
 "use client"
 
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
+import { IconEye, IconEyeOff, IconLoader2, IconLock } from "@tabler/icons-react"
+import type React from "react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { authClient } from "@/lib/auth/auth-client"
-import { Input } from "@/components/ui/input"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { IconLoader2, IconLock, IconEye, IconEyeOff } from "@tabler/icons-react"
+import { authClient } from "@/lib/auth/auth-client"
 
 const schema = z
   .object({

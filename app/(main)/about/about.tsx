@@ -1,8 +1,8 @@
 "use client"
 
 import { motion } from "motion/react"
-import Link from "next/link"
 import Image from "next/image"
+import Link from "next/link"
 
 const timeline = [
   {
@@ -25,34 +25,34 @@ const timeline = [
     title: "11 Years Strong",
     desc: "Now in its eleventh year, VheeWorld continues to serve the less privileged through community engagement, donations, and advocacy.",
   },
-]
+] as const
 
 const pillars = [
   {
     number: "01",
     title: "compassion",
     desc: "We approach our work with empathy and understanding, recognizing the unique challenges faced by those affected by streetism.",
-    align: "left",
+    align: "left" as const,
   },
   {
     number: "02",
     title: "Empowerment",
     desc: "Our programs are designed to provide individuals with the tools and support they need to become self-sufficient and regain control over their lives.",
-    align: "right",
+    align: "right" as const,
   },
   {
     number: "03",
     title: "Sustainability",
     desc: "We equip individuals with the skills, resources, and mental health support they need to build healthy, self-sufficient lives — and contribute positively to society.",
-    align: "left",
+    align: "left" as const,
   },
   {
     number: "04",
     title: "Collaboration",
     desc: "We believe in the power of partnerships and work closely with various stakeholders, including government agencies, businesses, and local communities, to maximize our impact.",
-    align: "right",
+    align: "right" as const,
   },
-]
+] as const
 
 const team = [
   {
@@ -106,10 +106,19 @@ const team = [
   {
     name: "Joseph Darko",
     image: "https://2qh3exphzw.ufs.sh/f/2ZIw3S0QKedp0XTqsMteq1y27ick5dXFIO4S8RJjfugaWNVZ",
-    role: "Socail Media Officer",
+    role: "Social Media Officer",
     bio: "The heartbeat of every annual project — volunteers who show up year after year to feed, clothe, educate, and encourage those in need.",
   },
-]
+] as const
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+} as const
 
 export default function About() {
   return (
@@ -130,36 +139,20 @@ export default function About() {
 
         <motion.div
           className="relative z-10 px-8 md:px-16 pb-16 pt-32"
+          initial="hidden"
+          animate="visible"
           variants={{
             hidden: { opacity: 0 },
             visible: {
               opacity: 1,
               transition: { staggerChildren: 0.15, delayChildren: 0.2 },
             },
-          }}
-          initial="hidden"
-          animate="visible">
-          <motion.p
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
-            className="text-xs font-bold tracking-[0.25em] uppercase text-yellow-400/80 mb-4">
+          }}>
+          <motion.p variants={fadeUp} className="text-xs font-bold tracking-[0.25em] uppercase text-yellow-400/80 mb-4">
             Est. 2015 — Ghana
           </motion.p>
           <motion.h1
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
+            variants={fadeUp}
             className="text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.05]">
             Our Story: Dignity
             <br />
@@ -174,21 +167,22 @@ export default function About() {
           {/* Left: narrative */}
           <div className="md:col-span-1 space-y-8">
             <h2 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight">
-              From one young woman's conviction to a nationwide movement.
+              From one young woman&apos;s conviction to a nationwide movement.
             </h2>
             <p className="text-sm text-gray-500 leading-relaxed">
               VheeWorld Foundation is a registered NGO committed to tackling streetism and supporting vulnerable
               children in Ghana. Founded by Miss Violet Lawson at 19, the foundation was built on a simple but powerful
-              truth: the streets should never be someone's only option.
+              truth: the streets should never be someone&apos;s only option.
             </p>
             <p className="text-sm text-gray-500 leading-relaxed">
               Through education, mentorship, and resource provision, VheeWorld aims to uplift children at risk —
               equipping them with the skills to break the cycle of poverty and build better futures for themselves.
             </p>
 
-            {/* Pull-quote */}
             <div className="border-l-2 border-purple-400/50 pl-5">
-              <p className="text-sm italic text-gray-600 leading-relaxed">"Streetism should not be an option."</p>
+              <p className="text-sm italic text-gray-600 leading-relaxed">
+                &ldquo;Streetism should not be an option.&rdquo;
+              </p>
               <p className="text-xs text-gray-400 mt-2 not-italic">— VheeWorld Foundation Motto</p>
             </div>
           </div>
@@ -198,14 +192,7 @@ export default function About() {
             {timeline.map((item) => (
               <motion.div
                 key={item.year}
-                variants={{
-                  hidden: { opacity: 0, y: 24 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-                  },
-                }}
+                variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
@@ -223,14 +210,7 @@ export default function About() {
       <section className="w-full py-24 px-8 md:px-16 bg-gray-50">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
           <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -246,14 +226,7 @@ export default function About() {
           </motion.div>
 
           <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -271,7 +244,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Core Architecture ── */}
+      {/* ── Core Values ── */}
       <section className="w-full bg-[#1a0533] py-4 overflow-hidden">
         <div className="max-w-5xl mx-auto px-8 md:px-16">
           <div className="flex items-center gap-3 py-10 border-b border-white/10">
@@ -282,14 +255,7 @@ export default function About() {
           {pillars.map((pillar) => (
             <motion.div
               key={pillar.number}
-              variants={{
-                hidden: { opacity: 0, y: 24 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-                },
-              }}
+              variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
@@ -321,14 +287,7 @@ export default function About() {
             {team.map((member, i) => (
               <motion.div
                 key={member.name}
-                variants={{
-                  hidden: { opacity: 0, y: 24 },
-                  visible: {
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-                  },
-                }}
+                variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
@@ -337,19 +296,20 @@ export default function About() {
                 <div className="w-full aspect-[3/4] bg-gray-100 rounded-xl mb-5 overflow-hidden relative">
                   <Image
                     src={member.image}
-                    alt={`Photo of ${member.name}, ${member.role} at VheeWorld Foundation`}
+                    alt={`${member.name} — ${member.role}`}
                     fill
                     sizes="(max-width: 640px) 100vw, 33vw"
                     priority={i < 3}
-                    unoptimized
+                    loading={i < 3 ? "eager" : "lazy"}
                     className="object-cover object-center transition duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-200/0 to-gray-100/0" />
-                  <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#1a0533]/60 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-linear-to-t from-[#1a0533]/60 to-transparent" />
                 </div>
                 <h3 className="text-base font-black text-gray-900">{member.name}</h3>
                 <p className="text-xs font-bold tracking-widest uppercase text-purple-500 mt-0.5 mb-3">{member.role}</p>
+                {/*
                 <p className="text-xs text-gray-400 leading-relaxed">{member.bio}</p>
+                */}
               </motion.div>
             ))}
           </div>
@@ -359,6 +319,9 @@ export default function About() {
       {/* ── Closing Quote CTA ── */}
       <section className="w-full py-28 px-8 md:px-16 bg-gray-50 text-center">
         <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
           variants={{
             hidden: { opacity: 0 },
             visible: {
@@ -366,60 +329,26 @@ export default function About() {
               transition: { staggerChildren: 0.15, delayChildren: 0.2 },
             },
           }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
           className="max-w-3xl mx-auto space-y-8">
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
-            className="text-6xl font-serif text-purple-300 leading-none select-none">
-            "
+          <motion.div variants={fadeUp} className="text-6xl font-serif text-purple-300 leading-none select-none">
+            &ldquo;
           </motion.div>
 
-          <motion.p
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
-            className="text-2xl md:text-3xl font-black text-gray-900 leading-snug">
+          <motion.p variants={fadeUp} className="text-2xl md:text-3xl font-black text-gray-900 leading-snug">
             We feed, educate, and clothe — with the hope of making their lives a little less burdensome, and a lot more
             possible.
           </motion.p>
 
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
-              },
-            }}
-            className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Link href="/get-involved/donate">
-              <button
-                type="button"
-                className="px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-white shadow-lg hover:scale-[1.03] active:scale-[0.98] transition duration-200 bg-linear-to-r from-violet-600 to-violet-700">
-                Support Our Mission
-              </button>
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+            <Link
+              href="/get-involved/donate"
+              className="px-8 py-4 rounded-full font-bold text-sm tracking-widest uppercase text-white shadow-lg hover:scale-[1.03] active:scale-[0.98] transition bg-linear-to-r from-violet-600 to-violet-700">
+              Support Our Mission
             </Link>
-            <Link href="/get-involved">
-              <button
-                type="button"
-                className="px-8 py-4 rounded-full font-semibold text-sm tracking-widest uppercase text-gray-700 border border-gray-200 hover:border-gray-400 transition-colors">
-                Get Involved
-              </button>
+            <Link
+              href="/get-involved"
+              className="px-8 py-4 rounded-full font-semibold text-sm tracking-widest uppercase text-gray-700 border border-gray-200 hover:border-gray-400 transition">
+              Get Involved
             </Link>
           </motion.div>
         </motion.div>
