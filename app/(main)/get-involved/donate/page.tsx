@@ -1,6 +1,6 @@
 "use client"
 
-import { IconArrowNarrowRight, IconLoader2, IconX } from "@tabler/icons-react"
+import { IconArrowNarrowRight, IconLoader2, IconX, IconCheck } from "@tabler/icons-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
