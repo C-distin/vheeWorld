@@ -1,5 +1,18 @@
 import { relations } from "drizzle-orm"
-import { boolean, index, integer, jsonb, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import {
+  boolean,
+  index,
+  integer,
+  json,
+  jsonb,
+  pgEnum,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core"
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -164,3 +177,38 @@ export const projectImages = pgTable("project_images", {
   order: integer("order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
 })
+
+// ----------- donation schema ----------------------------
+export const donations = pgTable("donations", {
+  id: serial("id").primaryKey(),
+  email: varchar("email", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  amount: integer("amount").notNull(), // in pesewas
+  currency: varchar("currency", { length: 3 }).default("GHS").notNull(),
+  frequency: varchar("frequency", { length: 20 }).notNull(), // "one-time" | "monthly"
+  status: varchar("status", { length: 20 }).default("pending").notNull(),
+  reference: varchar("reference", { length: 100 }).notNull().unique(),
+  authorizationCode: varchar("authorization_code", { length: 100 }),
+  paystackTxId: varchar("paystack_tx_id", { length: 50 }),
+  metadata: json("metadata"),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+})
+
+export const recurringAuthorizations = pgTable("recurring_authorizations", {
+  id: serial("id").primaryKey(),
+  email: varchar("email", { length: 255 }).notNull(),
+  authorizationCode: varchar("authorization_code", { length: 100 }).notNull(),
+  last4: varchar("last4", { length: 4 }).notNull(),
+  cardType: varchar("card_type", { length: 50 }).notNull(),
+  bank: varchar("bank", { length: 100 }).notNull(),
+  reusable: boolean("reusable").default(true).notNull(),
+  signature: varchar("signature", { length: 255 }).notNull().unique(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
+})
+
+export type Donation = typeof donations.$inferSelect
+export type NewDonation = typeof donations.$inferInsert
+export type RecurringAuthorization = typeof recurringAuthorizations.$inferSelect
