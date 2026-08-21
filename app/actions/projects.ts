@@ -105,6 +105,13 @@ export async function addProjectImage(data: { projectId: string; url: string; ke
   try {
     const [image] = await db.insert(projectImages).values(data).returning()
     revalidatePath(PATH)
+
+    const project = await getProjectById(data.projectId)
+    if (project) {
+      revalidatePath(`${PATH}/${project.id}`)
+      revalidatePath(`/projects/${project.slug}`)
+    }
+
     return { success: true, data: image }
   } catch (error) {
     console.error(error)
@@ -120,9 +127,19 @@ export async function deleteProjectImage(id: string) {
   try {
     const [image] = await db.select().from(projectImages).where(eq(projectImages.id, id)).limit(1)
     if (!image) return { success: false, error: "Image not found" }
+
     await utapi.deleteFiles(image.key)
     await db.delete(projectImages).where(eq(projectImages.id, id))
     revalidatePath(PATH)
+
+    if (image.projectId) {
+      const project = await getProjectById(image.projectId)
+      if (project) {
+        revalidatePath(`${PATH}/${project.id}`)
+        revalidatePath(`/projects/${project.slug}`)
+      }
+    }
+
     return { success: true }
   } catch (error) {
     console.error(error)
